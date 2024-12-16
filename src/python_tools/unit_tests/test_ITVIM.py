@@ -1,7 +1,5 @@
 '''
-AWP | Astrodynamics with Python by Alfonso Gonzalez
-https://github.com/alfonsogonzalez/AWP
-https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
+
 
 Interplanetary Trajectory V-Infinity Matcher (ITVIM) Unit Tests
 '''

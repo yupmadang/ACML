@@ -1,7 +1,4 @@
 '''
-AWP | Astrodynamics with Python by Alfonso Gonzalez
-https://github.com/alfonsogonzalez/AWP
-https://www.youtube.com/c/AlfonsoGonzalezSpaceEngineering
 
 CR3BP class definition
 '''
