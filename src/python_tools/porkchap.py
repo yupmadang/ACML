@@ -12,31 +12,35 @@ sys.path.append('D:/Yongjin/Code/ACML/src/util')
 import numpy as np
 import matplotlib.pyplot as plt
 
+import sys
+
+sys.path.append('D:/Yongjin/Code/ACML/src/python_tools/unit_tests')
+
 # Porkchop-Plot-Generator libraries
 import planetary_data  as pd
 import lambert_tools   as lt
 import ephemeris_query as eq
-from numerical_tools import norm
+from lambert_tools import norm
 
 # Dark plotting background
 plt.style.use( 'default' )
 
 
-def interplanetary_porkchop( config ):
+def interplanetary_porkchop(config, departure0, departure1, arrival0, arrival1):
     
     # Default config dictionary
     _config = {
         'planet0'       : pd.earth[ 'SPICE_ID' ],     # Departure planet
         'planet1'       : pd.mars[ 'SPICE_ID' ],      # Target planet
-        'departure0'    : '2020-07-01',         # Intial departure date
-        'departure1'    : '2020-09-01',         # Final departure date
-        'arrival0'      : '2020-11-01',         # Initial arrival date
-        'arrival1'      : '2022-01-24',         # Final arrival date
+        'departure0'    : departure0,         # Intial departure date
+        'departure1'    : departure1,         # Final departure date
+        'arrival0'      : arrival0,         # Initial arrival date
+        'arrival1'      : arrival1,         # Final arrival date
         'mu'            : pd.sun[ 'mu' ],       # Gravitational parameter in km**3/s**2
-        'step'          : 5,                    # Step size in days
+        'step'          : 1,                    # Step size in days
         'frame'         : 'J2000',              # Ecliptic of J2000
         'observer'      : '500@0',              # Solar Sytem Barycenter
-        'cutoff_v'      : 20.0,                 # Maximum vinf to consider             
+        'cutoff_v'      : 25.0,                 # Maximum vinf to consider             
         'c3_levels'     : None,                 # C3 levels for contour plot
         'vinf_levels'   : None,                 # vinf levels for contour plot
         'tof_levels'    : None,                 # tof levels for contour plot
@@ -284,7 +288,7 @@ def interplanetary_porkchop( config ):
         dep_mesh,
         arr_mesh,
         tofs,
-        levels = _config[ 'tof_levels' ], colors = 'white', linewidths = lw * 0.6
+        levels = _config[ 'tof_levels' ], colors = 'black', linewidths = lw * 0.6
     )
 
     plt.clabel( c0, fmt = '%i')

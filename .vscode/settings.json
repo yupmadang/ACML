@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
-        "./src/util"
+        "./src/util",
+        "./src/python_tools/unit_tests"
     ]
 }

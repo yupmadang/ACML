@@ -6,7 +6,31 @@ Lambert's Problem Tools
 import numpy as np
 
 # Porkchop-Plot-Generator Libraries
-import numerical_tools
+def newton(y, dydx, init_guess, tol, maxiter=1000):
+    '''
+    Calculate root of single variable function using Newton-Raphson method
+    '''
+    
+    x = init_guess
+
+    for i in range(maxiter):
+        x_new = x - y(x) / dydx(x)
+        if np.abs(x_new - x) < tol:
+            return x_new
+        x = x_new
+    raise RuntimeError("newtonRaphson: This function did not converge to a solution.")
+    
+def norm(vec):
+    '''
+    Vector norm
+    '''
+    return np.linalg.norm(vec)
+
+def acos(x):
+    '''
+    Inverse Cosine
+    '''
+    return np.arccos(np.clip(x, -1.0, 1.0))  # Ensure the value is within the valid range for acos
 
 
 def lambert_solver(R1, R2, dt, mu, tol=1e-6, maxiter=10000, trajectory='pro'):
@@ -89,7 +113,7 @@ def lambert_solver(R1, R2, dt, mu, tol=1e-6, maxiter=10000, trajectory='pro'):
             raise ValueError("Failed to find a suitable starting z value")
 
     # Find z by iterating using Newton's method until convergence within the error tolerance:
-    z = numerical_tools.newtonRaphson(F, dFdz, z, tol, maxiter)
+    z = newton(F, dFdz, z, tol, maxiter)
 
     # Check the solution
     if np.isnan(z) or np.isinf(z):
