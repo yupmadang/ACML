@@ -26,12 +26,12 @@ from lambert_tools import norm
 plt.style.use( 'default' )
 
 
-def interplanetary_porkchop(config, departure0, departure1, arrival0, arrival1):
+def interplanetary_porkchop(config, departure0, departure1, arrival0, arrival1, cutoff):
     
     # Default config dictionary
     _config = {
         'planet0'       : pd.earth[ 'SPICE_ID' ],     # Departure planet
-        'planet1'       : pd.mars[ 'SPICE_ID' ],      # Target planet
+        'planet1'       : pd.venus[ 'SPICE_ID' ],      # Target planet
         'departure0'    : departure0,         # Intial departure date
         'departure1'    : departure1,         # Final departure date
         'arrival0'      : arrival0,         # Initial arrival date
@@ -40,7 +40,7 @@ def interplanetary_porkchop(config, departure0, departure1, arrival0, arrival1):
         'step'          : 1,                    # Step size in days
         'frame'         : 'J2000',              # Ecliptic of J2000
         'observer'      : '500@0',              # Solar Sytem Barycenter
-        'cutoff_v'      : 25.0,                 # Maximum vinf to consider             
+        'cutoff_v'      : cutoff,                 # Maximum vinf to consider             
         'c3_levels'     : None,                 # C3 levels for contour plot
         'vinf_levels'   : None,                 # vinf levels for contour plot
         'tof_levels'    : None,                 # tof levels for contour plot
@@ -258,7 +258,7 @@ def interplanetary_porkchop(config, departure0, departure1, arrival0, arrival1):
 
     # Create plots
 
-    fig, ax = plt.subplots( figsize = _config[ 'figsize' ] )
+    fig,ax = plt.subplots( figsize = _config[ 'figsize' ] )
 
     c0 = ax.contour(
         dep_mesh,
@@ -371,3 +371,42 @@ def interplanetary_porkchop(config, departure0, departure1, arrival0, arrival1):
         plt.show()
 
     plt.close()
+    save_porkchop_data(dep_mesh, arr_mesh, C3_shorts, C3_longs, dv_shorts, dv_longs, tofs)
+
+def save_data_to_file(filepath, data, header=None):
+    """
+    Save data to a .dat file.
+    """
+    np.savetxt(filepath, data, delimiter=',', header=header if header else '', comments='')
+
+def save_porkchop_data(dep_mesh, arr_mesh, C3_shorts, C3_longs, dv_shorts, dv_longs, tofs):
+    """
+    Save porkchop data arrays to .dat files.
+    """
+    # Define output directory
+    data_dir = os.path.join(os.path.dirname(__file__), 'porkchop_data')
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir, exist_ok=True)
+    
+    # Define filenames
+    filenames = {
+        'C3_shorts': os.path.join(data_dir, 'C3_shorts.dat'),
+        'C3_longs': os.path.join(data_dir, 'C3_longs.dat'),
+        'dv_shorts': os.path.join(data_dir, 'dv_shorts.dat'),
+        'dv_longs': os.path.join(data_dir, 'dv_longs.dat'),
+        'tofs': os.path.join(data_dir, 'tofs.dat'),
+        'grid': os.path.join(data_dir, 'grid.dat')
+    }
+
+    # Save each array to a file
+    save_data_to_file(filenames['C3_shorts'], C3_shorts, header='C3_short values (km^2/s^2)')
+    save_data_to_file(filenames['C3_longs'], C3_longs, header='C3_long values (km^2/s^2)')
+    save_data_to_file(filenames['dv_shorts'], dv_shorts, header='Delta-V short (km/s)')
+    save_data_to_file(filenames['dv_longs'], dv_longs, header='Delta-V long (km/s)')
+    save_data_to_file(filenames['tofs'], tofs, header='Time of Flight (days)')
+
+    # Save the grid (departure and arrival dates)
+    grid_data = np.array([dep_mesh.flatten(), arr_mesh.flatten()]).T
+    save_data_to_file(filenames['grid'], grid_data, header='Departure and Arrival grids (days past reference)')
+
+    print("Data saved in directory:", data_dir)

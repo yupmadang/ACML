@@ -6,7 +6,6 @@ Interplanetary Trajectory V-Infinity Matcher (ITVIM) Unit Tests
 
 # 3rd party libraries
 import pytest
-import numpy    as np
 import spiceypy as spice
 import sys
 
@@ -42,8 +41,8 @@ def test_ITVIM_EME_1963_2_year( plot = False ):
 		'tm'    : -1
 		},
 		{
-		'planet'   : 4,
-		'planet_mu': pd.mars[ 'mu' ],
+		'planet'   : 2,
+		'planet_mu': pd.venus[ 'mu' ],
 		'time'     : '1964-12-30 20:20:21.5',
 		'tm'       : 1,
 		'tol'      : 1e-5

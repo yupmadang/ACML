@@ -35,13 +35,13 @@ def test_lambert_uv_earth_to_venus( plot = False ):
 
 	frame        = 'ECLIPJ2000'
 	observer     = 0
-	date0        = '2005-12-01'
-	datef        = '2006-03-01'
+	date0        = '2033-01-27'
+	datef        = '2033-05-03'
 	departure    = spice.utc2et( date0 )
 	arrival      = spice.utc2et( datef )
 	dt           = arrival - departure
-	state0_earth = spice.spkgeo( 399, departure, frame, observer )[ 0 ]
-	statef_venus = spice.spkgeo( 2,   arrival,   frame, observer )[ 0 ]
+	state0_earth = spice.spkgeo( 2, departure, frame, observer )[ 0 ]
+	statef_venus = spice.spkgeo( 399,   arrival,   frame, observer )[ 0 ]
 	v0_sc, v1_sc = lt.lamberts_universal_variables(
 		state0_earth[ :3 ], statef_venus[ :3 ], dt,
 		{ 'mu': pd.sun[ 'mu' ], 'tm': 1 } )
