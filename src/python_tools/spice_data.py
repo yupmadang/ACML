@@ -1,6 +1,4 @@
 '''
-
-
 SPICE data filepaths
 '''
 

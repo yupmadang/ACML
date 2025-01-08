@@ -41,8 +41,8 @@ def test_ITVIM_EME_1963_2_year( plot = False ):
 		'tm'    : -1
 		},
 		{
-		'planet'   : 2,
-		'planet_mu': pd.venus[ 'mu' ],
+		'planet'   : 4,
+		'planet_mu': pd.mars[ 'mu' ],
 		'time'     : '1964-12-30 20:20:21.5',
 		'tm'       : 1,
 		'tol'      : 1e-5
